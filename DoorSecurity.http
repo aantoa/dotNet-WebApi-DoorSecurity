@@ -1,0 +1,6 @@
+@DoorSecurity_HostAddress = http://localhost:5147
+
+GET {{DoorSecurity_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

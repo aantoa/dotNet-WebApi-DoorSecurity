@@ -2,6 +2,7 @@ using System.Data;
 using DoorsSecurity.Data;
 using DoorsSecurity.Dto;
 using DoorsSecurity.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoorsSecurity.Repository
 {
@@ -13,12 +14,12 @@ namespace DoorsSecurity.Repository
             _db = db;
         }
 
-        public IEnumerable<Door> GetAllDoors()
+        public async Task<IEnumerable<Door>> GetAllDoors()
         {
-            return _db.Doors.ToList();
+            return await _db.Doors.ToListAsync();
         }
 
-        public Door AddDoor(DoorCreateDto doorDto)
+        public  async Task<Door> AddDoor(DoorCreateDto doorDto)
         {
             Door door = new Door(){
                 Number = doorDto.Number,
@@ -32,8 +33,8 @@ namespace DoorsSecurity.Repository
                 throw new Exception("Incorrect door number");
             }
 
-            _db.Doors.Add(door);
-            _db.SaveChanges();
+            await _db.Doors.AddAsync(door);
+            await _db.SaveChangesAsync();
 
             return door;
         }

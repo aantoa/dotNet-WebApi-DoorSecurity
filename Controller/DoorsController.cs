@@ -21,7 +21,7 @@ namespace DoorsSecurity.Controllers
         {
             try
             {
-                var doors = _doorRepository.GetAllDoors();
+                var doors = await _doorRepository.GetAllDoors();
                 return Ok(doors);
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace DoorsSecurity.Controllers
         {
             try
             {
-                var door = _doorRepository.AddDoor(doorCreateDto);
+                var door = await _doorRepository.AddDoor(doorCreateDto);
                 return Ok(door);
             }
             catch (Exception ex)

@@ -1,6 +1,7 @@
 using DoorsSecurity.Dto;
 using DoorsSecurity.Models;
 using DoorsSecurity.Repository;
+using DoorsSecurity.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +11,10 @@ namespace DoorsSecurity.Controllers
     [Route("api/[controller]")]
     public class DoorsController : ControllerBase 
     {
-        private readonly DoorRepository _doorRepository;
-        public DoorsController(DoorRepository doorRepository)
+        private readonly DoorsService _doorsService;
+        public DoorsController(DoorsService doorsService)
         {
-            _doorRepository = doorRepository;
+            _doorsService = doorsService;
         }
 
         [HttpGet]
@@ -21,7 +22,7 @@ namespace DoorsSecurity.Controllers
         {
             try
             {
-                var doors = await _doorRepository.GetAllDoors();
+                var doors = await _doorsService.GetAllDoors();
                 return Ok(doors);
             }
             catch (Exception ex)
@@ -36,7 +37,7 @@ namespace DoorsSecurity.Controllers
         {
             try
             {
-                var door = await _doorRepository.AddDoor(doorCreateDto);
+                var door = await _doorsService.AddDoor(doorCreateDto);
                 return Ok(door);
             }
             catch (Exception ex)

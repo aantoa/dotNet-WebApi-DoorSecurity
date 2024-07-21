@@ -1,6 +1,7 @@
 using DoorsSecurity.Data;
 using DoorsSecurity.Repository;
 using DoorsSecurity.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDBContext>();
+builder.Services.AddDbContext<AppDBContext>(options => {
+    options.UseLazyLoadingProxies();
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<DoorsService>();
 builder.Services.AddScoped<CardsService>();

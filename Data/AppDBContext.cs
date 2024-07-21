@@ -26,11 +26,10 @@ namespace DoorsSecurity.Data
                     r => r.HasOne<Door>().WithMany().HasForeignKey("DoorId")
                 );
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseLazyLoadingProxies();
-            optionsBuilder.UseInMemoryDatabase("doorsSecurityInMemory");
-        }
+            // optionsBuilder.UseInMemoryDatabase("doorsSecurityInMemory");
+        }*/
     }
 }

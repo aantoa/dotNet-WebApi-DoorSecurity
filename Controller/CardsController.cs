@@ -129,7 +129,20 @@ namespace DoorsSecurity.Controllers
         [HttpDelete("{cardId}/doors/{doorId}")]
         public async Task<IActionResult> RevokeAccess(int cardId, int doorId)
         {
-            return Ok($"Revocando Acceso a CardId: {cardId}, de la DoorId: {doorId}");
+            try
+            {
+                var accessRevoked = await _accessService.RevokeAccessAsync(cardId, doorId);
+                if (accessRevoked)
+                {
+                    return Ok();
+                }
+                return NotFound(); 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error revoke access: {ex.StackTrace}");
+                return StatusCode(500, "Internal server error.");
+            }
         }
     }
 }

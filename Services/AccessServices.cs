@@ -32,7 +32,16 @@ namespace DoorsSecurity.Services
 
         public async Task<bool> RevokeAccessAsync(int idCard, int idDoor)
         {
-            return true;
+            var card = await _unitOfWork.Card.GetByIdAsync(idCard);
+            var door = await _unitOfWork.Door.GetByIdAsync(idDoor);
+
+            if( card != null && door != null)
+            {
+                card.Doors.Remove(door);
+                await _unitOfWork.SaveAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -23,5 +23,15 @@ namespace DoorsSecurity.Repository
         {
             return await dbSet.ToListAsync();
         }
+
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await dbSet.FindAsync(id);
+        }
+
+        public void Remove(T entity)
+        {
+            dbSet.Remove(entity);
+        }
     }
 }

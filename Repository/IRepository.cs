@@ -5,5 +5,8 @@ namespace DoorsSecurity.Repository
         Task<IEnumerable<T>> GetAllAsync();
         Task AddAsync(T entity);
 
+        void Remove(T entity);
+
+        Task<T> GetByIdAsync(int id);
     }
 }

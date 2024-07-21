@@ -46,5 +46,19 @@ namespace DoorsSecurity.Controllers
                 return StatusCode(500, "Internal server error.");
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try{
+                await _doorsService.RemoveDoorById(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting doors: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
     }
 }

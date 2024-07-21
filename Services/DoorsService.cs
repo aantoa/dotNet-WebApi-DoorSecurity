@@ -2,6 +2,7 @@ using DoorsSecurity.Data;
 using DoorsSecurity.Dto;
 using DoorsSecurity.Models;
 using DoorsSecurity.Repository;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoorsSecurity.Services
@@ -38,5 +39,17 @@ namespace DoorsSecurity.Services
 
             return door;
         }
+
+        public async Task<bool> RemoveDoorById(int id)
+        {
+            var door = await _unitOfWork.Door.GetByIdAsync(id);
+            if( door != null)
+            {
+                _unitOfWork.Door.Remove(door);
+                await _unitOfWork.SaveAsync();
+                return true;
+            }
+            return false;
+        } 
     }
 }

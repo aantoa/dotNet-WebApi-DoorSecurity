@@ -24,7 +24,7 @@ namespace DoorsSecurity.Repository
             return await dbSet.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int id)
         {
             return await dbSet.FindAsync(id);
         }
@@ -32,6 +32,11 @@ namespace DoorsSecurity.Repository
         public void Remove(T entity)
         {
             dbSet.Remove(entity);
+        }
+
+        public void Update(T entity)
+        {
+            dbSet.Update(entity);
         }
     }
 }

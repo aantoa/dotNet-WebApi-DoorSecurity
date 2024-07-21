@@ -15,12 +15,17 @@ namespace DoorsSecurity.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Door>> GetAllDoors()
+        public async Task<IEnumerable<Door>> GetAllDoorsAsync()
         {
             return await _unitOfWork.Door.GetAllAsync();
         }
 
-        public  async Task<Door> AddDoor(DoorCreateDto doorDto)
+        public async Task<Door?> GetDoorByIdAsync(int id)
+        {
+            return await _unitOfWork.Door.GetByIdAsync(id);
+        }
+
+        public  async Task<Door> AddDoorAsync(DoorSaveDto doorDto)
         {
             Door door = new Door(){
                 Number = doorDto.Number,
@@ -51,5 +56,18 @@ namespace DoorsSecurity.Services
             }
             return false;
         } 
+
+        public async Task<Door?> UpdateDoorAsync(int id, DoorSaveDto doorSaveDto)
+        {
+            var door = await _unitOfWork.Door.GetByIdAsync(id);
+            if( door != null)
+            {
+                door.Number = doorSaveDto.Number;               
+                door.Name = doorSaveDto.Name;              
+                _unitOfWork.Door.Update(door);
+                await _unitOfWork.SaveAsync();
+            }
+            return door;
+        }
     }
 }

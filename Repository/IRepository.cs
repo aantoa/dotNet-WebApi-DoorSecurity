@@ -7,6 +7,8 @@ namespace DoorsSecurity.Repository
 
         void Remove(T entity);
 
-        Task<T> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(int id);
+
+        void Update(T entity);
     }
 }

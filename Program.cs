@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDBContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<DoorsService>();
+builder.Services.AddScoped<CardsService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

@@ -6,6 +6,7 @@ namespace DoorsSecurity.Data
     public class AppDBContext : DbContext 
     {
         public DbSet<Door> Doors { get; set; }
+        public DbSet<Card> Cards { get; set; }
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {

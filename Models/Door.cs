@@ -9,5 +9,6 @@ namespace DoorsSecurity.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
+        public virtual ICollection<Card> Cards { get; set; } = new List<Card>();
     }
 }

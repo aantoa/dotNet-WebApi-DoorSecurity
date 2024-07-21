@@ -13,7 +13,9 @@ builder.Services.AddDbContext<AppDBContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<DoorsService>();
 builder.Services.AddScoped<CardsService>();
+builder.Services.AddScoped<AccessService>();
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

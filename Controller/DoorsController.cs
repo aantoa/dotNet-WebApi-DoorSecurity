@@ -1,3 +1,4 @@
+using AutoMapper;
 using DoorsSecurity.Dto;
 using DoorsSecurity.Models;
 using DoorsSecurity.Repository;
@@ -12,9 +13,11 @@ namespace DoorsSecurity.Controllers
     public class DoorsController : ControllerBase 
     {
         private readonly DoorsService _doorsService;
-        public DoorsController(DoorsService doorsService)
+        private readonly IMapper _mapper;
+        public DoorsController(DoorsService doorsService, IMapper mapper)
         {
             _doorsService = doorsService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,7 +26,8 @@ namespace DoorsSecurity.Controllers
             try
             {
                 var doors = await _doorsService.GetAllDoorsAsync();
-                return Ok(doors);
+                var mappedDoors = _mapper.Map<List<DoorWithCardsGetDto>>(doors);
+                return Ok(mappedDoors);
             }
             catch (Exception ex)
             {
@@ -38,7 +42,8 @@ namespace DoorsSecurity.Controllers
             try
             {
                 var door = await _doorsService.GetDoorByIdAsync(id);
-                return Ok(door);
+                var mappedDoor = _mapper.Map<DoorWithCardsGetDto>(door);
+                return Ok(mappedDoor);
             }
             catch (Exception ex)
             {

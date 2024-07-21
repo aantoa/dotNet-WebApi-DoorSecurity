@@ -10,12 +10,26 @@ namespace DoorsSecurity.Data
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
-            
+            this.ChangeTracker.LazyLoadingEnabled = true;
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Door>()
+                .HasMany(d => d.Cards)
+                .WithMany(c => c.Doors)
+                .UsingEntity<Dictionary<string, object>>(
+                    "DoorCard",
+                    r => r.HasOne<Card>().WithMany().HasForeignKey("CardId"),
+                    r => r.HasOne<Door>().WithMany().HasForeignKey("DoorId")
+                );
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseLazyLoadingProxies();
             optionsBuilder.UseInMemoryDatabase("doorsSecurityInMemory");
         }
     }

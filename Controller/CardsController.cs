@@ -1,3 +1,4 @@
+using AutoMapper;
 using DoorsSecurity.Dto;
 using DoorsSecurity.Models;
 using DoorsSecurity.Repository;
@@ -12,9 +13,13 @@ namespace DoorsSecurity.Controllers
     public class CardsController : ControllerBase 
     {
         private readonly CardsService _cardsService;
-        public CardsController(CardsService cardsService)
+        private readonly AccessService _accessService;
+        private readonly IMapper _mapper;
+        public CardsController(CardsService cardsService, AccessService accessService, IMapper mapper)
         {
             _cardsService = cardsService;
+            _accessService = accessService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,7 +28,8 @@ namespace DoorsSecurity.Controllers
             try
             {
                 var cards = await _cardsService.GetAllCardsAsync();
-                return Ok(cards);
+                var mappedCards = _mapper.Map<List<CardWithDoorsGetDto>>(cards);
+                return Ok(mappedCards);
             }
             catch (Exception ex)
             {
@@ -38,7 +44,8 @@ namespace DoorsSecurity.Controllers
             try
             {
                 var card = await _cardsService.GetCardByIdAsync(id);
-                return Ok(card);
+                var mappedCard = _mapper.Map<CardWithDoorsGetDto>(card);
+                return Ok(mappedCard);
             }
             catch (Exception ex)
             {
@@ -97,6 +104,32 @@ namespace DoorsSecurity.Controllers
                 Console.WriteLine($"Error updating card: {ex.Message}");
                 return StatusCode(500, "Internal server error.");
             }
+        }
+
+        [HttpPost("{cardId}/doors/{doorId}")]
+        public async Task<IActionResult> GrantAccess(int cardId, int doorId)
+        {
+            try
+            {
+                var accessGranted = await _accessService.GrantAccessAsync(cardId, doorId);
+                if(accessGranted)
+                {
+                    return Ok();
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error granted access: {ex.StackTrace}");
+                return StatusCode(500, "Internal server error.");
+            }
+            
+        }
+
+        [HttpDelete("{cardId}/doors/{doorId}")]
+        public async Task<IActionResult> RevokeAccess(int cardId, int doorId)
+        {
+            return Ok($"Revocando Acceso a CardId: {cardId}, de la DoorId: {doorId}");
         }
     }
 }
